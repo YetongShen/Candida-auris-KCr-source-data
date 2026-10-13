@@ -58,7 +58,7 @@ PTMDynamicAnalysis:
 https://github.com/ShabbyAllan/PTMDynamicAnalysis
 
 Large files are distributed through the Releases section of this repository.
-The release description specifies their original directory locations.
+
 
 ## Reuse and reproduction
 
@@ -70,3 +70,12 @@ be established from the sample metadata rather than inferred from filenames.
 The repository does not yet provide a verified, fully automated workflow
 for reproducing every manuscript panel. Software versions and analysis
 settings should be recorded when the workflows are rerun.
+
+## Download source data
+
+Source data and analysis files for Figures 1 and 2 are available in [Release v1.0.0](https://github.com/YetongShen/Candida-auris-KCr-source-data/releases/tag/v1.0.0).
+
+- **Fig.1.rar**: Source data and analysis files for Figure 1.
+- **Fig.2.rar**: Source data and analysis files for Figure 2.
+
+Download the archives from the **Assets** section and extract them before use.
