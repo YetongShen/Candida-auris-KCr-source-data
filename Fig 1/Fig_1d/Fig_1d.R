@@ -1,0 +1,157 @@
+library(dplyr)
+library(readxl)
+library(openxlsx)
+library(magrittr)
+library(gtools)
+library(stringr)
+library(ggplot2)
+library(tidyverse)
+library(ggsci)
+library(patchwork)
+
+
+####汇总迁入
+
+path <- paste('C:/Users/lihai/Desktop/Fig_1d/',1:3,'/汇总迁入SUM.csv',sep = '')
+
+readList <- lapply(path, function(x){read.csv(x)})
+
+finnalData <- data.frame("X","F1176CTOF1176F","F1176CTOF2852C","F1176FTOF2852F","F2852CTOF2852F")##防止几个表的列标题不同，如果不同会报错
+
+colnames(finnalData) <- finnalData[1,]
+
+finnalData <- finnalData[-1,]
+
+for (i in 1:length(readList)) {
+  
+  readListData <- readList[[i]]
+  
+  finnalData <- rbind(finnalData,readListData)
+  
+}
+
+finnalData <- finnalData[order(finnalData$X),]
+
+#每列拆分三行,x为finnalData的第几列，输出没三行合并一次列,y为列名
+
+threeCol <- function(x){
+  
+  finnalColData <- data.frame(1:3) %>% t() %>%as.data.frame()
+  
+  colnames(finnalColData) <- paste(colnames(finnalData)[x],'_',1:3,sep = '')
+  
+  finnalColData <- finnalColData[-1,]
+  
+  for (i in seq(1,15,3)) {
+    
+    sampleData <- as.data.frame(finnalData[i:(i + 2),x]) %>% t() %>% as.data.frame()
+    
+    colnames(sampleData) <- colnames(finnalColData)
+    
+    sampleData <- sampleData *100
+    
+    finnalColData <- rbind(finnalColData,sampleData)
+    
+  }
+  
+  rownames(finnalColData) <- unique(finnalData$X)
+  
+  return(finnalColData)
+  
+}
+
+finnalGRAPHData_output <- data.frame(1:5)
+
+rownames(finnalGRAPHData_output) <- unique(finnalData$X)
+
+#a为finnalData列号
+
+for (a in 2:5) {
+  
+  colData <- threeCol(a)
+  
+  finnalGRAPHData_output <- cbind(finnalGRAPHData_output,colData)
+  
+}
+
+finnalGRAPHData_output <- finnalGRAPHData_output[,-1]
+
+savepath_finnalGRAPHData <- 'C:/Users/lihai/Desktop/Fig_1d/input_SUM.csv'
+
+write.csv(finnalGRAPHData_output,savepath_finnalGRAPHData)
+
+
+
+
+####汇总迁出
+
+path <- paste('C:/Users/lihai/Desktop/Fig_1d/',1:3,'/汇总迁出SUM.csv',sep = '')
+
+readList <- lapply(path, function(x){read.csv(x)})
+
+finnalData <- data.frame("X","F1176CTOF1176F","F1176CTOF2852C","F1176FTOF2852F","F2852CTOF2852F")##防止几个表的列标题不同，如果不同会报错
+
+colnames(finnalData) <- finnalData[1,]
+
+finnalData <- finnalData[-1,]
+
+for (i in 1:length(readList)) {
+  
+  readListData <- readList[[i]]
+  
+  finnalData <- rbind(finnalData,readListData)
+  
+}
+
+finnalData <- finnalData[order(finnalData$X),]
+
+#每列拆分三行,x为finnalData的第几列，输出没三行合并一次列,y为列名
+
+threeCol <- function(x){
+  
+  finnalColData <- data.frame(1:3) %>% t() %>%as.data.frame()
+  
+  colnames(finnalColData) <- paste(colnames(finnalData)[x],'_',1:3,sep = '')
+  
+  finnalColData <- finnalColData[-1,]
+  
+  for (i in seq(1,15,3)) {
+    
+    sampleData <- as.data.frame(finnalData[i:(i + 2),x]) %>% t() %>% as.data.frame()
+    
+    colnames(sampleData) <- colnames(finnalColData)
+    
+    sampleData <- sampleData *100
+    
+    finnalColData <- rbind(finnalColData,sampleData)
+    
+  }
+  
+  rownames(finnalColData) <- unique(finnalData$X)
+  
+  return(finnalColData)
+  
+}
+
+finnalGRAPHData_output <- data.frame(1:5)
+
+rownames(finnalGRAPHData_output) <- unique(finnalData$X)
+
+#a为finnalData列号
+
+for (a in 2:5) {
+  
+  colData <- threeCol(a)
+  
+  finnalGRAPHData_output <- cbind(finnalGRAPHData_output,colData)
+  
+}
+
+finnalGRAPHData_output <- finnalGRAPHData_output[,-1]
+
+savepath_finnalGRAPHData <- 'C:/Users/lihai/Desktop/Fig_1d/output_SUM.csv'
+
+write.csv(finnalGRAPHData_output,savepath_finnalGRAPHData)
+
+
+
