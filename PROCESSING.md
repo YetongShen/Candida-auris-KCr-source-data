@@ -190,9 +190,7 @@ Source directory: `Fig 2/Fig_2e/`.
 The TIFF files provide the deposited microscopy images for the four strain
 and treatment groups. `Fig 2E.pzfx` provides the native quantitative project.
 
-A complete processing record should specify the image-analysis software,
-segmentation settings, definition of mitochondrial individuals and networks,
-and the sampling unit used for quantification.
+Mitochondrial individuals and networks were quantified using the Mitochondrial Network Analysis (MiNA) toolset. Statistical analysis was performed using ordinary one-way ANOVA followed by Tukey’s multiple-comparisons test.
 
 ## Figure 2F: Mitochondrial ROS
 
