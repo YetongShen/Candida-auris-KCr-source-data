@@ -1,0 +1,184 @@
+---
+title: "Fig2d"
+output: html_document
+date: "2026-10-12"
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(tidyverse)
+library(readxl)
+library(openxlsx)
+library(magrittr)
+library(stringr)
+library(ggplot2)
+library(tidyr)
+library(pheatmap)
+
+##所有质谱文件形成List
+
+PTMnames <- c('Ac','Ub','Ma','Sc','Cr')
+
+readpath_PTM <- 'C:/Users/lihai/Desktop/Fig_2d/11762852/'
+
+FinnalOriginal_List <- list()
+
+savepath <- 'C:/Users/lihai/Desktop/Fig_2d/pathway/'
+
+for (i in 1:length(PTMnames)) {
+  
+  readpath <- paste(readpath_PTM,PTMnames[i],'.xlsx',sep = '')
+  
+  PTM <- read_excel(readpath,sheet = 3)
+  
+  colnames(PTM) <- PTM[1,]
+  
+  PTM <- PTM[-1,]
+  
+  PTM_Fiannal <- data.frame(PTM[,1:5],PTM[,42:53])
+  
+  FinnalOriginal_List <- c(FinnalOriginal_List,list(PTM_Fiannal))
+  
+}
+
+readpath_protein <- paste(readpath_PTM,'Protein.xlsx',sep = '')
+
+proteinList <- read_excel(readpath_protein,sheet = 3)
+
+proteinList_Fiannal <- data.frame(proteinList[,1:5],proteinList[,65:76])
+
+FinnalOriginal_List <- c(FinnalOriginal_List,list(proteinList_Fiannal))
+
+names_document <- c('Ac','Ub','Ma','Sc','Cr','Protein')
+
+#kegg
+
+KOannotation <- read.delim("C:/Users/lihai/Desktop/Fig_2d/KOannotation.tsv", stringsAsFactors=FALSE)
+
+KOannotation1 <- separate(KOannotation, col = 1, into =c('aaa','Gene','bbbb'), sep = "[|]", remove = FALSE)
+
+KOannotation_final <- KOannotation1[,c(3,5,6:7)]
+
+###通路蛋白顺序
+proteinOrder <- read_excel('C:/Users/lihai/Desktop/Fig_2d/G+TCA.xlsx',col_names = F)
+
+colnames(proteinOrder) <- c('KOnumber','ProteinID','ProteinName')
+
+#####输入map号，输出输入通路的所有修饰表达矩阵和热图,储存位置为mapname/修饰名_mapdata.csv,四组对比
+
+##需求：按照顺序排序，蛋白不同的地方要有break
+
+#筛选proteinOrder中所有的修饰情况
+
+for (i in 1:length(FinnalOriginal_List)) {
+  
+  PTMdata <- FinnalOriginal_List[[i]][,-(3:5)]
+  
+  PTMdata_filter <- PTMdata[which(PTMdata$Protein.accession %in% proteinOrder$ProteinID),]
+  
+  colnames(PTMdata_filter)[1] <- 'ProteinID'
+  
+  PTMdata_filter <- merge(PTMdata_filter,proteinOrder,by = 'ProteinID',all.x = T)#添加新列ProteinNames
+  
+  PTMdata_filter <- PTMdata_filter[order(factor(PTMdata_filter$ProteinID,levels=c(proteinOrder$ProteinID))),] ##按照特定顺序排序
+  
+  #去除表达量在所有组中都为NA的位点，这种位点只检测到但没有定量
+  
+  if(sum(apply(PTMdata_filter,1,function(x) sum(is.na(x)) == 12)) != 0){
+    
+    PTMdata_filter <- PTMdata_filter[-which(apply(PTMdata_filter,1,function(x) sum(is.na(x)) == 12)),]}
+  
+  ##meanTotalData <- data.frame(ProteinSiteID = paste(PTMdata_filter$ProteinName,PTMdata_filter$Position,sep = '_'))
+  
+  newData <- data.frame(ProteinID = unique(PTMdata_filter$ProteinName))
+  
+  for (a in seq(3,12,3)) {
+    
+    groupData <- data.frame(PTMdata_filter[,1:2],PTMdata_filter$KOnumber,PTMdata_filter$ProteinName,PTMdata_filter[,a:c(a+2)])
+    
+    colnames(groupData)[3:4] <- c('KOnumber','ProteinName')
+    
+    groupData[,5:7] <- as.data.frame(apply(groupData[,5:7],2,as.numeric))#将数据转换为数值型
+    
+    meanData <- apply(groupData[,5:7],1,function(x){
+      
+      if(sum(is.na(x)) == 3){NA}else{
+        
+        if(sum(is.na(x)) == 2){sum(x[-which(is.na(x))]) / 1}else{
+          
+          if(sum(is.na(x)) == 1){sum(x[-which(is.na(x))]) / 2}else{
+            
+            sum(x) / 3
+            
+          }
+          
+        }
+        
+      }
+      
+    })%>%as.data.frame() ###根据NA的个数的情况，来算平均值
+    
+    colnames(meanData) <- str_sub(colnames(groupData)[5],1,6)##取前6个字符作为行名
+    
+    groupData <- cbind(groupData,meanData)
+    
+    ##对每个蛋白的所有位点取表达量平均值
+    
+    prob <- c()
+    
+    for (b in 1:nrow(newData)) {
+      
+      filter_groupData <- filter(groupData,ProteinName == newData[b,1])
+      
+      filter_groupData[is.na(filter_groupData)] <- 0
+      
+      prob <- append(prob,(sum(filter_groupData[,8]) / nrow(filter_groupData)))
+      
+    }
+    
+    prob <- as.data.frame(prob)
+    
+    colnames(prob) <- colnames(meanData)
+    
+    newData <- cbind(newData,prob)
+    
+  }
+  
+  
+  rownames(newData) <- newData[,1]
+  
+  newData <- newData[,-1]
+  
+  ##更换列顺序
+  
+  newData <- data.frame(newData[,3:4],newData[,1:2])
+  
+  #热图
+  
+  library(ggsci)
+  
+  savepath_heatmap1 <-  paste(savepath,names_document[i],'_PTMheatmap无聚类.pdf',sep = '')
+  
+  pheatmap(newData,filename = savepath_heatmap1,cluster_cols = FALSE,cluster_rows = F,scale='row',
+           color = colorRampPalette(c(pal_gsea()(10)[2],'white',pal_gsea()(10)[10]))(50),
+           cellwidth = 30,cellheight = 10,na_col = 'white',fontsize_row = 5,
+           fontsize_number = 5,border_color = 'white')
+  
+  
+  savepath_heatmap2 <-  paste(savepath,'/',names_document[i],'_PTMheatmap.pdf',sep = '')
+  
+  pheatmap(newData,filename = savepath_heatmap2,cluster_cols = FALSE,cluster_rows = T,scale='row',
+           color = colorRampPalette(c(pal_gsea()(10)[2],'white',pal_gsea()(10)[10]))(50),
+           cellwidth = 30,cellheight = 10,na_col = 'white',fontsize_row = 5,
+           fontsize_number = 5,border_color = 'white')
+  
+}
+
+
+library(RColorBrewer)
+display.brewer.all(type="div")
+
+
+
+```
+
