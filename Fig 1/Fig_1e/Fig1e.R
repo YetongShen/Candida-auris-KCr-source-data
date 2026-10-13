@@ -1,0 +1,185 @@
+setwd("C:/Users/lihai/Desktop/Fig_1e")
+
+getwd()
+
+library(stringr)
+
+
+
+
+
+path <- 'C:/Users/lihai/Desktop/Fig_1e'
+
+pattern1 <- '\\w*详细迁入信息.csv'
+
+#pattern1 <- '\\w*详细迁出信息.csv'
+#切换输入输出
+
+fileNames <- dir(paste(path,'/1',sep = ''),pattern = pattern1)
+#组名
+sampleNames <- str_sub(fileNames,1,14)
+
+
+finnalData <- data.frame(ID = 'aaa',Probability = 1,percentage = 1,type = 'aaa',Repeat = '1',sampleType = 'aaa')
+
+finnalData <- finnalData[-1,]
+
+for (i in 1:length(sampleNames)) {
+  
+  readPath <- paste(path,'/',1:3,'/',fileNames[i],sep = '')
+  
+  sampleList <- lapply(readPath, function(x){read.csv(x)})
+  #合并list中的数据
+  
+  totalData <- data.frame(ID = 'aaa',Probability = 1,percentage = 1,type = 'aaa',Repeat = '1',sampleType = 'aaa')
+  
+  totalData <- totalData[-1,]
+  
+  for (a in 1:length(sampleList)) {
+    
+    sampleData <- sampleList[[a]]
+    
+    TOCr <- sampleData[grep(pattern = '\\w*TOCr',x = sampleData[,2]),]
+    #切换\\w*TOCr
+    
+    
+    TOCr$Repeat <- a
+    
+    TOCr$sampleType <- sampleNames[i]
+    
+    TOCr <- TOCr[,-1]
+    
+    colnames(TOCr)[1] <- 'ID'
+    
+    totalData <- rbind(totalData,TOCr) 
+    
+  }
+  
+  finnalData <- rbind(finnalData,totalData)
+  
+}
+
+finnalData$percentage <- 100 * finnalData$percentage
+
+write.csv(finnalData,file = 'C:/Users/lihai/Desktop/Fig_1e/inputRates.csv')
+
+
+## Please calculate AVG before this step, and rename inputRates.csv to inputRates_Avg.csv
+
+
+library(ggplot2)
+library(ggsci)
+finnalData<- read.csv(file = 'inputRates_Avg.csv')
+
+ggplot(finnalData,aes(x = ID,y=percentage,group=sampleType,fill=sampleType)) +
+  stat_summary(fun="mean",geom="bar",position = position_dodge(0.95)) +  
+  geom_point( stat= 'identity',aes(x = ID, y = percentage ),colour = 'black', size = 0.3) +
+  geom_text(aes(label =finnalData$AVG ), size = 1, hjust = 0.5, vjust = 3, position =     "stack")+
+  stat_summary(fun.data = "mean_se",geom = "errorbar",width=0.2,position = position_dodge(0.95))+
+  scale_fill_npg()+
+  theme_bw()+
+  theme(panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        panel.background = element_blank(),
+        legend.key=element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1,color = 'black'))+
+  facet_grid(.~sampleType)
+
+savepath <- 'C:/Users/lihai/Desktop/Fig_1e/Input.pdf'
+
+ggsave(filename = savepath,width = 7,height = 3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pattern1 <- '\\w*详细迁出信息.csv'
+#切换输入输出
+
+fileNames <- dir(paste(path,'/1',sep = ''),pattern = pattern1)
+#组名
+sampleNames <- str_sub(fileNames,1,14)
+
+
+finnalData <- data.frame(ID = 'aaa',Probability = 1,percentage = 1,type = 'aaa',Repeat = '1',sampleType = 'aaa')
+
+finnalData <- finnalData[-1,]
+
+for (i in 1:length(sampleNames)) {
+  
+  readPath <- paste(path,'/',1:3,'/',fileNames[i],sep = '')
+  
+  sampleList <- lapply(readPath, function(x){read.csv(x)})
+  #合并list中的数据
+  
+  totalData <- data.frame(ID = 'aaa',Probability = 1,percentage = 1,type = 'aaa',Repeat = '1',sampleType = 'aaa')
+  
+  totalData <- totalData[-1,]
+  
+  for (a in 1:length(sampleList)) {
+    
+    sampleData <- sampleList[[a]]
+    
+    TOCr <- sampleData[grep(pattern = '\\CrTOw*',x = sampleData[,2]),]
+    #切换\\w*TOCr
+    
+    
+    TOCr$Repeat <- a
+    
+    TOCr$sampleType <- sampleNames[i]
+    
+    TOCr <- TOCr[,-1]
+    
+    colnames(TOCr)[1] <- 'ID'
+    
+    totalData <- rbind(totalData,TOCr) 
+    
+  }
+  
+  finnalData <- rbind(finnalData,totalData)
+  
+}
+
+finnalData$percentage <- 100 * finnalData$percentage
+
+write.csv(finnalData,file = 'C:/Users/lihai/Desktop/Fig_1e/outputRates.csv')
+
+
+## Please calculate AVG before this step, and rename outputRates.csv to outputRates_Avg.csv
+
+
+library(ggplot2)
+library(ggsci)
+finnalData<- read.csv(file = 'outputRates_Avg.csv')
+
+ggplot(finnalData,aes(x = ID,y=percentage,group=sampleType,fill=sampleType)) +
+  stat_summary(fun="mean",geom="bar",position = position_dodge(0.95)) +  
+  geom_point( stat= 'identity',aes(x = ID, y = percentage ),colour = 'black', size = 0.3) +
+  geom_text(aes(label =finnalData$AVG ), size = 1, hjust = 0.5, vjust = 3, position =     "stack")+
+  stat_summary(fun.data = "mean_se",geom = "errorbar",width=0.2,position = position_dodge(0.95))+
+  scale_fill_npg()+
+  theme_bw()+
+  theme(panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        panel.background = element_blank(),
+        legend.key=element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1,color = 'black'))+
+  facet_grid(.~sampleType)
+
+savepath <- 'C:/Users/lihai/Desktop/Fig_1e/Output.pdf'
+
+ggsave(filename = savepath,width = 7,height = 3)
+
+
+
