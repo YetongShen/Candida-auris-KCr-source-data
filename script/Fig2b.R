@@ -1,0 +1,160 @@
+library(dplyr)
+library(tidyverse)
+library(readxl)
+library(openxlsx)
+library(magrittr)
+library(clusterProfiler)
+library(stringr)
+library(ggplot2)
+library(tidyr)
+
+savepath <- 'C:/Users/lihai/Desktop/Fig_2b/GOKegg'
+
+path <- 'C:/Users/lihai/Desktop/Fig_2b/2852Fvs1176F与2852Cvs1176C'
+
+sampleNames <- str_sub(dir(path),1,13)
+
+readpath <- paste(path,'/',sampleNames,'独有.txt',sep = '')
+
+fileList <- lapply(readpath, function(x){read.delim(file = x,header = F)})
+
+creatpath <- paste(savepath,'/',sampleNames,sep = '')
+
+#go kegg
+
+display_number = c(15, 10, 15)
+
+GOannotation_BP <- read.csv(file = 'C:/Users/lihai/Desktop/Fig_2b/GOannotation_BP.csv')
+
+GOannotation_CC <- read.csv(file = 'C:/Users/lihai/Desktop/Fig_2b/GOannotation_CC.csv')
+
+GOannotation_MF <- read.csv(file = 'C:/Users/lihai/Desktop/Fig_2b/GOannotation_MF.csv')
+
+GOinfo <- read.delim("C:/Users/lihai/Desktop/Fig_2b/go.tb", stringsAsFactors=FALSE)
+
+KOannotation <- read.delim("C:/Users/lihai/Desktop/Fig_2b/KOannotation.tsv", stringsAsFactors=FALSE)
+
+KOannotation1 <- separate(KOannotation, col = 1, into =c('aaa','Gene','bbbb'), sep = "[|]", remove = FALSE)
+
+KOannotation_final <- KOannotation1[,c(3,5,6:7)]
+
+display_number = c(15, 10, 15)
+
+
+for (i in 1:length(fileList)) {
+  
+  dir.create(creatpath[i])
+  
+  setwd(creatpath[i])
+  
+  sampleFile <- fileList[[i]]
+  
+  Protein <- sampleFile[,1]
+  
+  #开始GO
+  
+  BP<- enricher(Protein,
+                TERM2GENE=GOannotation_BP,
+                TERM2NAME=GOinfo[1:2],
+                pAdjustMethod = "BH",
+                pvalueCutoff  = 1,
+                qvalueCutoff  =1)
+  
+  BP_arrange <- as.data.frame(BP) %>%
+    arrange(pvalue)
+  
+  write.csv(as.data.frame(BP_arrange), file="BP.csv")
+  
+  result_BP <- as.data.frame(BP_arrange)[1:display_number[1], ]
+  
+  dotplot(BP,color='pvalue',title='Biological Process')
+  
+  ggsave("BP.jpg",width =8,height =10)
+  
+  CC<- enricher(Protein,
+                TERM2GENE=GOannotation_CC,
+                TERM2NAME=GOinfo[1:2],
+                pAdjustMethod = "BH",
+                pvalueCutoff  = 1,
+                qvalueCutoff  =1)
+  
+  CC_arrange <- as.data.frame(CC) %>%
+    arrange(pvalue)
+  
+  write.csv(as.data.frame(CC_arrange), file="CC.csv")
+  
+  result_CC <- as.data.frame(CC_arrange)[1:display_number[2], ]
+  
+  dotplot(CC,color='pvalue',title='Cellular Component')
+  
+  ggsave("CC.jpg",width =8,height =10)
+  
+  MF<- enricher(Protein,
+                TERM2GENE=GOannotation_MF,
+                TERM2NAME=GOinfo[1:2],
+                pAdjustMethod = "BH",
+                pvalueCutoff  = 1,
+                qvalueCutoff  =1)
+  
+  MF_arrange <- as.data.frame(MF) %>%
+    arrange(pvalue)
+  
+  write.csv(as.data.frame(MF_arrange), file="MF.csv")
+  
+  result_MF <- as.data.frame(MF_arrange)[1:display_number[3], ]
+  
+  dotplot(MF,color='pvalue',title='Molecular Function')
+  
+  ggsave("MF.jpg",width =8,height =10)
+  
+  # KEGG
+  
+  KEGG <- enricher(Protein,
+                   TERM2GENE=KOannotation_final[c(3,1)],
+                   TERM2NAME=KOannotation[c(3,4)],
+                   pvalueCutoff  = 1,
+                   qvalueCutoff  =1)
+  
+  dotplot(KEGG,color='pvalue',title='KEGG')
+  
+  write.csv(KEGG,file = 'kegg.csv')
+  
+  ggsave("kegg.jpg",width =8,height =10)
+  
+  #画图
+  
+  go_enrich_df <- data.frame(ID=c(result_BP$ID, result_CC$ID, result_MF$ID),
+                             Description=c(result_BP$Description, result_CC$Description, result_MF$Description),
+                             Count=c(result_BP$Count, result_CC$Count, result_MF$Count),
+                             type=factor(c(rep("biological process", count(result_BP)), 
+                                           rep("cellular component", count(result_CC)),
+                                           rep("molecular function", count(result_MF))), 
+                                         levels=c("molecular function", "cellular component", "biological process")),
+                             pvalue=c(result_BP$pvalue, result_CC$pvalue, result_MF$pvalue))
+  
+  
+  
+  go_enrich_df$number <- factor(rev(1:nrow(go_enrich_df)))
+  
+  go_enrich_df$'-log10p' <- -log10(go_enrich_df$pvalue)
+  
+  labels=go_enrich_df$Description
+  
+  names(labels) = rev(1:nrow(go_enrich_df))
+  
+  ## colors for bar // green, blue, orange
+  CPCOLS <- c("#8DA1CB", "#FD8D62", "#66C3A5")
+  
+  p <- ggplot(data=go_enrich_df, aes(x=number, y= go_enrich_df$`-log10p`, fill=type)) +
+    geom_bar(stat="identity", width=0.8) + coord_flip() + 
+    scale_fill_manual(values = CPCOLS) + theme_test() + 
+    scale_x_discrete(labels=labels) +
+    xlab("GO term") + 
+    theme(axis.text=element_text(face = "bold", color="gray50")) +
+    labs(title = "The Most Enriched GO Terms")
+  p
+  ggsave('summary.jpg',width = 30,height =10)
+  
+}
+
+
