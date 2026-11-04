@@ -73,9 +73,14 @@ settings should be recorded when the workflows are rerun.
 
 ## Download source data
 
-Source data and analysis files for Figures 1 and 2 are available in [Release v1.0.0](https://github.com/YetongShen/Candida-auris-KCr-source-data/releases/tag/v1.0.0).
+The current source data and analysis files are available in the `main` branch:
 
-- **Fig.1.rar**: Source data and analysis files for Figure 1.
-- **Fig.2.rar**: Source data and analysis files for Figure 2.
+- [Figure 1 source data](Fig%201/)
+- [Figure 2 source data](Fig%202/)
+- [Data sources and processing descriptions](PROCESSING.md)
 
-Download the archives from the **Assets** section and extract them before use.
+To download the current repository files, select **Code > Download ZIP** on the repository homepage.
+
+### Archived release
+
+[Release v1.0.0](https://github.com/YetongShen/Candida-auris-KCr-source-data/releases/tag/v1.0.0) contains the initial **Fig.1.rar** and **Fig.2.rar** archives. These archives are not automatically updated when files on `main` change. Please use the files on `main` for subsequent revisions.
