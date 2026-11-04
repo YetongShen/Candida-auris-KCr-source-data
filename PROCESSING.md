@@ -52,8 +52,11 @@ Figure 1D.
 
 ## Figure 1D: Aggregate PTM fluctuation coefficients
 
-Source file: `Fig 1/Fig 1D.xlsx`.
-Related directory: `Fig 1/Fig_1d/`.
+Source directory: `Fig 1/Fig_1d/`.
+
+Summary workbook: `Fig 1/Fig_1d/Fluctuations coefficient.xlsx`.
+
+Native Prism project: `Fig 1/Fig_1d/Fluctuations coefficient.pzfx`.
 
 1. The deposited script combines the input and output summary files from
    directories `1`, `2`, and `3`.
@@ -86,6 +89,10 @@ the script before the workflow is described as fully automated.
 
 Source directory: `Fig 1/Fig_1f/`.
 
+Native Prism project: `Fig 1/Fig_1f/Fig 1f.prism`.
+
+Heatmap source table: `Fig 1/Fig_1f/Fig 1F heatmap.xlsx`.
+
 The Excel and Prism files contain the susceptibility source data and native
 plotting project. MIC-related results should be traced to the growth curves
 and the fitted model in the Prism project.
@@ -95,7 +102,9 @@ Gompertz model settings, and the interpretation of individual data points.
 
 ## Figure 1G: Larval fungal burden
 
-Source file: `Fig 1/Fig 1G.prism`.
+Source file: Fig 1/Fig 1G/Fig 1G.prism: native Prism project.
+
+Fig 1/Fig 1G/Fig 1G cfu.xlsx: CFU source-data workbook.
 
 The native Prism project contains the source values used for the larval
 fungal-burden panel. Each plotted value should be linked to its experimental
@@ -196,6 +205,8 @@ Mitochondrial individuals and networks were quantified using the Mitochondrial N
 
 Source directory: `Fig 2/Fig_2f/`.
 
+Native Prism project: `Fig 2/Fig_2f/Fig 2f.prism`.
+
 The FCS files provide flow-cytometry acquisition data, and the Prism project
 provides the quantitative plotting file.
 
@@ -206,8 +217,8 @@ documented.
 ## Figures 2G and 2H: NAC treatment and mitochondrial ROS
 
 Source files:
-- `Fig 2/Fig 2g/`: flow-cytometry acquisition files.
-- `Fig 2/Fig 2H.prism`: quantitative plotting project.
+- `Fig 2/Fig_2g/`: flow-cytometry acquisition files.
+- `Fig 2/Fig 2h.prism`: quantitative plotting project.
 
 The FCS files support the fluorescence-distribution panel, while the Prism
 project contains the quantitative values used for the corresponding
@@ -219,7 +230,7 @@ be documented consistently.
 ## Figures 2I and 2J: Sodium crotonate and mitochondrial ROS
 
 Source files:
-- `Fig 2/Fig 2I/`: flow-cytometry acquisition files.
+- `Fig 2/Fig_2I/`: flow-cytometry acquisition files.
 - `Fig 2/Fig 2J.prism`: quantitative plotting project.
 
 The acquisition files and quantitative project support the corresponding
@@ -229,6 +240,8 @@ refer to the sodium-crotonate experiment in this directory.
 ## Figure 2K: NAC and fluconazole susceptibility
 
 Source directory: `Fig 2/Fig_2k/`.
+
+Native Prism project: `Fig 2/Fig_2k/Fig 2K.prism`.
 
 The spreadsheets contain the deposited growth measurements, including
 time-specific tables. Prism files contain the native analysis and plotting
