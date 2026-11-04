@@ -1,18 +1,6 @@
 # Data sources and processing descriptions
 
-The current source data and analysis files are available in the main branch:
-
-Figure 1 source data
-
-Figure 2 source data
-
-Data sources and processing descriptions
-
-To download the current repository files, select Code > Download ZIP on the repository homepage.
-
-Archived release
-
-Release v1.0.0 contains the initial Fig.1.rar and Fig.2.rar archives. These archives are not automatically updated when files on main change. Please use the files on main for subsequent revisions.
+This document describes the source files and processing steps represented in the deposited Figure 1 and Figure 2 directories. It documents the available files and scripts; it is not a record of a newly executed analysis.
 
 ## Figure 1A: PTM occurrence across functional categories
 
