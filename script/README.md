@@ -5,15 +5,14 @@ This directory collects copies of the available R scripts associated with Figure
 ## Script locations
 
 | Script | Original location |
-| --- | --- |
-| `Fig_1a.r` | `Fig 1/Fig_1a/Fig_1a.r` |
-| `筛选独立位点.R` | `Fig 1/Fig_1a/Single_sites/筛选独立位点.R` |
-| `Fig_1d.R` | `Fig 1/Fig_1d/Fig_1d.R` |
-| `Fig1e.R` | `Fig 1/Fig_1e/Fig1e.R` |
-| `位点迁入迁出率.R` | `Fig 2/Fig_2a/位点迁入迁出率/位点迁入迁出率.R` |
-| `Fig_2a.R` | `Fig 2/Fig_2a/Fig_2a.R` |
-| `Fig2b.R` | `Fig 2/Fig_2b/Fig2b.R` |
-| `Fig2d.R` | `Fig 2/Fig_2d/Fig2d.R` |
+|---|---|
+| [Fig_1d.R](Fig_1d.R) | [Fig 1/Fig_1d/Fig_1d.R](../Fig%201/Fig_1d/Fig_1d.R) |
+| [Fig1e.R](Fig1e.R) | [Fig 1/Fig_1e/Fig1e.R](../Fig%201/Fig_1e/Fig1e.R) |
+| [Fig_2a.R](Fig_2a.R) | [Fig 2/Fig_2a/Fig_2a.R](../Fig%202/Fig_2a/Fig_2a.R) |
+| [Fig2b.R](Fig2b.R) | [Fig 2/Fig_2b/Fig2b.R](../Fig%202/Fig_2b/Fig2b.R) |
+| [Fig2d.R](Fig2d.R) | [Fig 2/Fig_2d/Fig2d.R](../Fig%202/Fig_2d/Fig2d.R) |
+
+The table lists script copies currently deposited in this directory. Additional Figure 1A scripts are available in [Fig 1/Fig_1a/](../Fig%201/Fig_1a/).
 
 ## Running the scripts
 
