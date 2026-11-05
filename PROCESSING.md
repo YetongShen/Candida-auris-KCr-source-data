@@ -232,14 +232,27 @@ documented.
 
 Source files:
 - `Fig 2/Fig_2g/`: flow-cytometry acquisition files.
-- `Fig 2/Fig 2h.prism`: quantitative plotting project.
+- `Fig 2/Fig 2h.prism`: quantitative data and regression project.
 
-The FCS files support the fluorescence-distribution panel, while the Prism
-project contains the quantitative values used for the corresponding
-summary panel.
+MitoSOX fluorescence was measured in SCZA9005 under YPD and
+fluconazole (FLU) conditions at NAC concentrations of 0, 5 and
+10 mM. Each of three independent biological experiments included
+all six combinations of treatment condition and NAC concentration.
+Mean fluorescence in the PE-A channel was used for quantification.
 
-Control samples, gating, fluorescence statistics, and dose labels should
-be documented consistently.
+Exploratory ordinary least-squares linear regressions were fitted
+separately for the YPD and FLU conditions. Each condition-specific
+regression included nine measurements pooled across the three
+experiments, with NAC concentration as the predictor and mean
+MitoSOX fluorescence as the response. Slopes are expressed as
+fluorescence units/mM NAC.
+
+The project contains the estimated slopes, model-based 95% confidence
+intervals, and nominal two-sided p values for the individual
+condition-specific slope tests. Confidence intervals and p values
+were calculated under the model assumption of independent residuals.
+The fitted lines and model-based 95% confidence bands are retained
+in the Prism project.
 
 ## Figures 2I and 2J: Sodium crotonate and mitochondrial ROS
 
