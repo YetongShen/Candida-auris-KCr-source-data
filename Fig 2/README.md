@@ -17,6 +17,6 @@ See [processing descriptions](../PROCESSING.md) for panel-specific data sources 
 | Figure 2G | [Flow-cytometry source files](Fig_2g/) |
 | Figure 2H | [Prism project](Fig%202h.prism) |
 | Figure 2I | [Flow-cytometry source files](Fig_2I/) |
-| Figure 2J | [Prism project](Fig%202J.prism) |
+| Figure 2J | [Prism project](Fig%202j.prism) |
 | Figure 2K | [Prism project](Fig_2k/Fig%202K.prism); [growth-data files](Fig_2k/) |
 | Figure 2L | [Prism project](Fig%202L.prism) |
