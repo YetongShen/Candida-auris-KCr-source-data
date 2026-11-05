@@ -87,7 +87,10 @@ the script before the workflow is described as fully automated.
 
 Source directory: `Fig 1/Fig_1f/`.
 
-Native Prism project: `Fig 1/Fig_1f/Fig 1f.prism`.
+Trend-analysis Prism project: `Fig 1/Fig_1f/Fig 1f.prism`.
+
+Dose-response source project:
+`Fig 1/Fig_1f/Fig1F_IC50_dose_response_source.prism`.
 
 Associated source-data workbook:
 `Fig 1/Fig_1f/Fig 1F heatmap.xlsx`.
@@ -109,10 +112,12 @@ calculated under the model assumption of independent residuals.
 The fitted lines and model-based 95% confidence bands are retained
 in the project.
 
-The IC50 estimates are inputs to these trend regressions. The
-antifungal dose-response fitting used to obtain the IC50 estimates
-is a separate analysis from the IC50-versus-NaCr regressions
-documented here.
+The IC50 estimates used in the trend regressions match the IC50
+summary table in the dose-response source project. The source
+project retains the growth-response measurements, transformations,
+and nonlinear fitting settings, together with historical analysis
+records. The revised NaCr trend regressions are provided separately
+in `Fig 1f.prism`.
 
 ## Figure 1G: Larval fungal burden
 
