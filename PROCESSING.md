@@ -210,10 +210,24 @@ This difference from the current manuscript caption must be resolved.
 
 Source directory: `Fig 2/Fig_2e/`.
 
-The TIFF files provide the deposited microscopy images for the four strain
-and treatment groups. `Fig 2E.pzfx` provides the native quantitative project.
+Native Prism project: `Fig 2/Fig_2e/Fig 2E.pzfx`.
 
-Mitochondrial individuals and networks were quantified using the Mitochondrial Network Analysis (MiNA) toolset. Statistical analysis was performed using ordinary one-way ANOVA followed by Tukey’s multiple-comparisons test.
+The deposited image files provide mitochondrial microscopy images
+for SCZA9007 and SCZA9005 under untreated and fluconazole-treated
+conditions.
+
+Mitochondrial individuals and networks were quantified using the
+Mitochondrial Network Analysis (MiNA) toolset. The Prism project
+contains separate tables for Individuals and Networks.
+
+Each point represents one field of view. Four fields were sampled
+per condition in each of four independent biological experiments,
+giving 16 field-level measurements per condition.
+
+The saved analyses use Kruskal–Wallis tests followed by Dunn’s
+multiple-comparisons tests. These analyses summarize exploratory
+comparisons of field-level measurements; fields are nested within
+their respective biological experiments.
 
 ## Figure 2F: Mitochondrial ROS
 
