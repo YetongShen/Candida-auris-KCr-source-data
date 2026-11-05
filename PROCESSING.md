@@ -89,14 +89,30 @@ Source directory: `Fig 1/Fig_1f/`.
 
 Native Prism project: `Fig 1/Fig_1f/Fig 1f.prism`.
 
-Heatmap source table: `Fig 1/Fig_1f/Fig 1F heatmap.xlsx`.
+Associated source-data workbook:
+`Fig 1/Fig_1f/Fig 1F heatmap.xlsx`.
 
-The Excel and Prism files contain the susceptibility source data and native
-plotting project. MIC-related results should be traced to the growth curves
-and the fitted model in the Prism project.
+The Prism project contains fluconazole IC50 estimates for SCZA9007
+and SCZA9005 at NaCr concentrations of 0, 2.5 and 5 mM. Each strain
+was examined in three independent biological experiments, with all
+three NaCr concentrations included in each experiment.
 
-The final documentation should specify the growth-data normalization,
-Gompertz model settings, and the interpretation of individual data points.
+Exploratory ordinary least-squares linear regressions were fitted
+separately for each strain using the nine pooled IC50 estimates.
+NaCr concentration was the predictor, and fluconazole IC50 was the
+response. Slopes are expressed as (μg/mL)/mM NaCr.
+
+The project contains the estimated slopes, model-based 95% confidence
+intervals, and nominal two-sided p values for the individual
+strain-specific slope tests. Confidence intervals and p values were
+calculated under the model assumption of independent residuals.
+The fitted lines and model-based 95% confidence bands are retained
+in the project.
+
+The IC50 estimates are inputs to these trend regressions. The
+antifungal dose-response fitting used to obtain the IC50 estimates
+is a separate analysis from the IC50-versus-NaCr regressions
+documented here.
 
 ## Figure 1G: Larval fungal burden
 
@@ -229,11 +245,24 @@ be documented consistently.
 
 Source files:
 - `Fig 2/Fig_2I/`: flow-cytometry acquisition files.
-- `Fig 2/Fig 2J.prism`: quantitative plotting project.
+- `Fig 2/Fig 2j.prism`: quantitative data and regression project.
 
-The acquisition files and quantitative project support the corresponding
-distribution and summary panels. Historical filenames containing `NACR`
-refer to the sodium-crotonate experiment in this directory.
+MitoSOX fluorescence was measured in fluconazole-treated SCZA9005 at
+NaCr concentrations of 0, 2.5 and 5 mM. Each of three independent
+biological experiments included all three concentrations. Mean
+fluorescence in the PE-A channel was used for quantification.
+
+An exploratory ordinary least-squares linear regression was fitted
+to the nine pooled measurements, with NaCr concentration as the
+predictor and mean MitoSOX fluorescence as the response. The project
+contains the estimated slope, its model-based 95% confidence interval,
+and the nominal two-sided p value for testing the slope against zero.
+Confidence intervals and p values were calculated under the model
+assumption of independent residuals. The fitted line and model-based
+95% confidence bands are retained in the Prism project.
+
+Historical filenames containing `NACR` refer to the sodium-crotonate
+experiment in this directory.
 
 ## Figure 2K: NAC and fluconazole susceptibility
 
